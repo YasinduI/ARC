@@ -8,7 +8,7 @@ import csv
 
 def grid_image (filePath, dpi, tick_interval) :
     
-    """overlays gridlines onto given map or image. probably not needed"""
+    """overlays gridlines onto a given image. likely not needed"""
 
     # open image
     image = Image.open(filePath)
@@ -53,7 +53,11 @@ def grid_image (filePath, dpi, tick_interval) :
 
 def get_map (filePath) :
 
-    """second attempt at algo to get a .csv "map" from image"""
+    """second attempt at algo to get a .csv path cost map from image"""
+
+    # open .csv file to write cost matrix, and create writer object
+    costCSV = open('C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv', 'w', newline = '')
+    writer = csv.writer(costCSV)
 
     # load in image
     image = Image.open(filePath)
@@ -63,13 +67,19 @@ def get_map (filePath) :
     width = image.size[0]
     height = image.size[1]
 
-    # path cost matrix with default value of 999
+    # path cost matrix with default value of 999 for impossible paths
     cost_matrix = [[999 for i in range(width)] for j in range(height)]
 
-    for x in range (width) :
-        for y in range (height) :
+    # alter cost matrix to assign possible paths a cost of 1
+    # export csv
+    for y in range (height) :
+        for x in range (width) :
             if (pixel[x, y] != (255, 255, 255)) :
                 cost_matrix[x][y] = 1
+
+        writer.writerow(cost_matrix[y])  
+
+    costCSV.close()
 
 # main()
 
