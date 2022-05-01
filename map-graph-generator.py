@@ -4,10 +4,11 @@
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
 from PIL import Image
+import csv
 
 def grid_image (filePath, dpi, tick_interval) :
     
-    """overlays gridlines onto given map or image"""
+    """overlays gridlines onto given map or image. probably not needed"""
 
     # open image
     image = Image.open(filePath)
@@ -38,6 +39,10 @@ def grid_image (filePath, dpi, tick_interval) :
 
     # add the image
     axis.imshow(image)
+    plt.imshow(image)
+
+    # axes and ticks
+    #plt.show()
 
     # save the image
     img_gridlined_path = 'C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image-with-grid.png'
@@ -46,7 +51,31 @@ def grid_image (filePath, dpi, tick_interval) :
     # return file path of gridlined image
     return img_gridlined_path
 
+def get_map (filePath) :
 
-grid_image('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png', 50, 5)
+    """second attempt at algo to get a .csv "map" from image"""
+
+    # load in image
+    image = Image.open(filePath)
+    pixel = image.load()
+
+    # get dimensions
+    width = image.size[0]
+    height = image.size[1]
+
+    # path cost matrix with default value of 999
+    cost_matrix = [[999 for i in range(width)] for j in range(height)]
+
+    for x in range (width) :
+        for y in range (height) :
+            if (pixel[x, y] != (255, 255, 255)) :
+                cost_matrix[x][y] = 1
+
+# main()
+
+ #grid_image('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png', 50, 5)
+
+get_map('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png')
+
 
 
