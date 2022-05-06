@@ -27,19 +27,26 @@ def get_map (filePath) :
 
     # alter cost matrix to assign possible paths a cost of 1
     # export .csv map of paths costs
-    for y in range (height) :
-        for x in range (width) :
-            if (pixel[x, y] != (255, 255, 255)) :
-                cost_matrix[x][y] = 1
+    for y in range (height - 1) :
+        for x in range (width - 1) :
+            if (tuple(pixel[x, y]) != (255, 255, 255)) : # pixels referenced as column, row: x, y
+                cost_matrix[y][x] = 1
 
-        writer.writerow(cost_matrix[y])  
+        writer.writerow(cost_matrix[y])
+
+
+    print(pixel[202, 11][0] == 255)
 
     # close .csv map file
     costCSV.close()
 
+    print (cost_matrix[202][11])    
+    
+    return cost_matrix
+
 # main()
 class Node():
-    """A node class for A* Pathfinding"""
+    """A node class for A* pathfinding"""
 
     def __init__(self, parent=None, position=None):
         self.parent = parent
@@ -52,6 +59,21 @@ class Node():
     def __eq__(self, other):
         return self.position == other.position
 
+def find_map_index(index_list) :
+    """ finds map index in the cost matrix given .csv location in [AB, 123] form """
+    
+    # shift row number -1 because list starts index at 0
+    row = index_list[1] - 1
+
+    letters = index_list[0]
+    # shift column number -1 because list starts index at 0
+    column = -1
+    for letter in letters :
+        column = column + (ord(letter) - 64) # subtract by 64 to get accurate ASCII value
+    
+    # return matrix indices in list [row, column]
+    return (row, column)
+        
 
 def astar(maze, start, end):
     """Returns a list of tuples as a path from the given start to the given end in the given maze"""
@@ -143,24 +165,33 @@ def main():
     # if square.hasWhite() : cost = 999999. These are impossible paths
     # assign costs to nodes only because paths can have a cost of 1. since impossible paths have a cost of 999
     
-    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 6, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    #maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 6, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-    # depends on classroom locations
-    start = (0, 0)
-    end = (7, 6)
-
-    path = astar(maze, start, end)
-    print(path)
+    maze = get_map('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png')
     
+    # depends on classroom locations. set as index in .csv file. (e.g. AB123 is list [AB, 123])
+    start =  ['GE', 203]
+    end = ['KN', 462]
+
+    # indices in matrix
+    startNode = find_map_index(start)
+    endNode = find_map_index(end)
+
+    print (startNode, endNode)
+    
+    path = astar(maze, startNode, endNode)
+    # print(path)   
+
+    print (maze[201][11])
 
 
 if __name__ == '__main__':
