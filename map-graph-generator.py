@@ -1,17 +1,16 @@
 # This script takes a black and white image as input, maps it onto an NxN grid,
-# and assigns infinite costs to all impossible paths (white squares)
+# and assigns cost 999 to all impossible paths (white squares)
 
-import matplotlib.pyplot as plt
-import matplotlib.ticker as plticker
 from PIL import Image
 import csv
+
 
 def get_map (filePath) :
 
     """gets a .csv path cost map "cost_matrix" from a given image"""
 
     # open .csv file to write cost matrix, and create writer object
-    costCSV = open('C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv', 'w', newline = '')
+    costCSV = open(r"C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv", 'w', newline = '')
     writer = csv.writer(costCSV)
 
     # load in image
@@ -21,26 +20,28 @@ def get_map (filePath) :
     # get dimensions
     width = image.size[0]
     height = image.size[1]
+    
+    # create cost matrix
+    # initialize with infinite costs
+    # 0 is walkable, 1 is not walkable
+    cost_matrix = [[999 for i in range(width)] for j in range(height)]
 
-    # path cost matrix with default value of 999 for impossible paths
-    cost_matrix = [[1 for i in range(width)] for j in range(height)]
-
-    # alter cost matrix to assign possible paths a cost of 1
     # export .csv map of paths costs
+    # loop through image and write cost matrix
+    filename = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png"
+    img = Image.open(filename)
     for y in range (height) :
         for x in range (width) :
 
-            zero = int(pixel[x, y][0])   # convert zeroth element in pixel to int
-            first = int(pixel[x, y][1]) 
-            second = int(pixel[x, y][2]) 
-           
-            if ((zero, first, second) != (255, 255, 255)) : # pixels referenced as column, row: x, y
+            # if pixel is white, assign cost of 999
+            # if pixel is black, assign cost of 0
+            colors = img.getpixel((x,y))
+
+            if (colors) != (255, 255, 255) : # pixels referenced as column, row: x, y
                 cost_matrix[y][x] = 0
 
-        writer.writerow(cost_matrix[y])
+        writer.writerow(cost_matrix[y]) 
     
-    print (cost_matrix[197][42], cost_matrix[192][34])
-
     # close .csv map file
     costCSV.close()
     
@@ -178,11 +179,11 @@ def main():
     #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
     #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-    maze = get_map('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png')
+    maze = get_map(r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png")
     
     # depends on classroom locations. set as index in .csv file. (e.g. AB123 is list [AB, 123])
-    start =  ['AP', 198]
-    end = ['BG', 193]
+    start =  ['FB', 185]
+    end = ['AKZ', 309]
 
     # indices in matrix
     startNode = find_map_index(start)
@@ -196,6 +197,3 @@ def main():
 if __name__ == '__main__':
     main()
   #  get_map('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png')
-
-
-
