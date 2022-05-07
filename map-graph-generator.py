@@ -4,7 +4,6 @@
 from PIL import Image
 import csv
 
-
 def get_map (filePath) :
 
     """gets a .csv path cost map "cost_matrix" from a given image"""
