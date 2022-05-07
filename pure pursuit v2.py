@@ -9,7 +9,11 @@ import matplotlib.pyplot as plt
 import time
 
 global L, wp, vx, theta, w_limit
+<<<<<<< Updated upstream
 L = 1.
+=======
+L = 0.5
+>>>>>>> Stashed changes
 wp = 0
 vx = 0.3
 theta = 0.5
@@ -17,8 +21,16 @@ w_limit = 0.48
 #waypoints = [[0, 8], [5, 8], [5, 0], [12, 0]]
 #waypoints = [[0, 8], [5, 8], [6, 10], [5, 0], [12, 0]]
 #waypoints = [[0, 8], [5, 8], [5, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
+<<<<<<< Updated upstream
 waypoints = [[0, 0], [0, 8], [5, 8], [5, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
 position = [0, 8.5]
+=======
+##waypoints = [[0, 0], [3, 8], [7, 8], [8, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
+waypoints = [[0, 0], [3, 7], [3, 8], [9, 3], [2, 6], [7 ,6], [9, 7], [10, 5]]
+position = [0, 0]
+#def plot_waypoints(waypoints):
+
+>>>>>>> Stashed changes
 
 def position_vector(vx, w, theta):
     global w_limit
@@ -32,6 +44,10 @@ def position_vector(vx, w, theta):
         tdot = -w_limit
     return Xdot, Ydot, tdot
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 def pure_pursuit(position, waypoints):
     global L, wp, vx, theta
     X = position[0]
