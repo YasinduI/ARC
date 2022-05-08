@@ -7,6 +7,8 @@ import matplotlib.ticker as plticker
 from PIL import Image
 import csv
 import time
+import functools
+import operator
 
 start = time.time()
 def get_map (filePath) :
@@ -202,10 +204,16 @@ def main():
     
     path = astar(maze, startNode, endNode)
     print(path)
+    
+    file=r'C:\Users\elite\Desktop\ARC\path.txt' 
+    with open(file, 'w') as filetowrite:
+        filetowrite.write(str(path))
 
 if __name__ == '__main__':
     main()
   #  get_map('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png')
+
+
 
 
 end = time.time()
