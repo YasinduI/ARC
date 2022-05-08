@@ -18,10 +18,7 @@ w_limit = 0.48 #rad/s
 #waypoints = [[0, 8], [5, 8], [6, 10], [5, 0], [12, 0]]
 #waypoints = [[0, 8], [5, 8], [5, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
 #waypoints = [[0, 0], [3, 8], [7, 8], [8, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
-file_string = open("path.txt", "r")
-readfile = file_string.read()
-waypoints = ' '.join(str(readfile) for readfile in list)
-print(waypoints)
+waypoints = [[0, 0], [3, 8], [7, 8], [8, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
 position = [184, 33]
 #def plot_waypoints(waypoints):
 
