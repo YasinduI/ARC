@@ -160,12 +160,7 @@ def astar(maze, start, end):
             open_list.append(child)
 
 
-def main():
-
-    # create maze using external script
-    # overlay a NxN grid
-    # if square.hasWhite() : cost = 999999. These are impossible paths
-    # assign costs to nodes only because paths can have a cost of 1. since impossible paths have a cost of 999
+def get_waypoints():
     
     #maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
     #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
@@ -180,19 +175,12 @@ def main():
 
     maze = get_map(r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png")
     
-    # depends on classroom locations. set as index in .csv file. (e.g. AB123 is list [AB, 123])
+    # set as index in .csv file. (e.g. AB123 is list [AB, 123])
     start =  ['FB', 185]
     end = ['AKZ', 309]
 
-    # indices in matrix
-    startNode = find_map_index(start)
-    endNode = find_map_index(end)
-
-    print (startNode, endNode)
-    
-    path = astar(maze, startNode, endNode)
+    print('START:', find_map_index(start), 'END:', find_map_index(end), '\n')
+    path = astar(maze, find_map_index(start), find_map_index(end))
     print(path)
 
-if __name__ == '__main__':
-    main()
-  #  get_map('C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png')
+    return(path)
