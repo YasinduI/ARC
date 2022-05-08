@@ -9,6 +9,7 @@ import csv
 import time
 import functools
 import operator
+import time
 
 start = time.time()
 def get_map (filePath) :
@@ -207,7 +208,8 @@ def main():
     
     file=r'C:\Users\elite\Desktop\ARC\path.txt' 
     with open(file, 'w') as filetowrite:
-        filetowrite.write(str(path))
+        filetowrite.write("/n"+"-Path:" + str(path))
+
 
 if __name__ == '__main__':
     main()
