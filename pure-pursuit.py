@@ -1,5 +1,5 @@
 '''
-* path_following_algorithms
+* robot-main.py
 * pure_pursuit.py
 * Copyright (c) 2021, Seunghyun Lim
 * Modified 08 May 2022 by Harrison Z, Yasindu I
@@ -21,7 +21,7 @@ w_limit = 0.48 # angular velocity in rad/s
 waypoints = [[]]
 position = [184, 33]
 
-def set_waypoints (waypoints_list) :
+def input_waypoints (waypoints_list) :
     global waypoints
     waypoints = waypoints_list
 

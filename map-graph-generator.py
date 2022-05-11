@@ -1,10 +1,14 @@
-# This script takes a black and white image as input, maps it onto an NxN grid,
-# and assigns cost 999 to all impossible paths (white squares)
+'''
+* robot-main.py
+* map-graph-generator.py
+* This script takes a black and white image as input, maps it onto an NxN pixel grid,
+* and assigns cost 1 to all non-walkable paths (white squares)
+'''
 
 from PIL import Image
 import csv
 
-def get_map (filePath) :
+def get_map (csvPath) :
 
     """gets a .csv path cost map "cost_matrix" from a given image"""
 
@@ -13,7 +17,7 @@ def get_map (filePath) :
     writer = csv.writer(costCSV)
 
     # load in image
-    image = Image.open(filePath)
+    image = Image.open(csvPath)
     pixel = image.load()
 
     # get dimensions
