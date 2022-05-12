@@ -8,12 +8,36 @@
 from PIL import Image
 import csv
 
+map_ref_file = r""
+cost_output_file = r""
+# set as indices of .csv file. (e.g. AB123 is list [AB, 123])
+start = ['A', 1]
+end = ['Z', 1]
+cost_matrix = [[]]
+
+
+def set_map_param (map_ref_path, cost_output_path, start_node, end_node) :
+
+    global map_ref_file, cost_output_file, start, end
+    map_ref_file = map_ref_path
+    cost_output_file = cost_output_path
+    start = start_node
+    end = end_node
+
+
+def get_cost_matrix () :
+
+    global cost_matrix
+    return cost_matrix
+
+
 def get_map (csvPath) :
 
+    global map_ref_file, cost_output_file, cost_matrix
     """gets a .csv path cost map "cost_matrix" from a given image"""
 
     # open .csv file to write cost matrix, and create writer object
-    costCSV = open(r"C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv", 'w', newline = '')
+    costCSV = open(cost_output_file, 'w', newline = '')
     writer = csv.writer(costCSV)
 
     # load in image
@@ -31,8 +55,7 @@ def get_map (csvPath) :
 
     # export .csv map of paths costs
     # loop through image and write cost matrix
-    filename = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png"
-    img = Image.open(filename)
+    img = Image.open(map_ref_file)
     for y in range (height) :
         for x in range (width) :
 
@@ -165,23 +188,21 @@ def astar(maze, start, end):
 
 
 def get_waypoints():
-    
-    #maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 6, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-    maze = get_map(r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png")
+    global map_ref_file, cost_output_file, start, end
     
-    # set as index in .csv file. (e.g. AB123 is list [AB, 123])
-    start =  ['FB', 185]
-    end = ['AKZ', 309]
+    # maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 6, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+    maze = get_map(map_ref_file)
 
     print('START:', find_map_index(start), 'END:', find_map_index(end), '\n')
     path = astar(maze, find_map_index(start), find_map_index(end))
