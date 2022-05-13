@@ -12,19 +12,19 @@ def main() :
 
     # Gets list of waypoints from map-graph-generator.py, given a black and white image of walkable paths
     map_generator.set_map_param(map_ref_path = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png",
-                               cost_output_path = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv",
-                                  start_node = ['FB', 185],
-                                    end_node = ['AKZ', 309])
+                            cost_output_path = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv",
+                                  start_node = ['BP', 192],
+                                    end_node = ['FO', 185])
     waypoints = map_generator.get_waypoints()
 
     # Gets cost matrix
     cost_matrix = map_generator.get_cost_matrix()
 
     # Gets GPS coordinate matrix
-   # gps_matrix = gps_grid_generator.compile_gps_matrix(cost_matrix = cost_matrix, 
-    #                                                     pixel_len = 1.2, 
-     #                                               landmark_coord = (69, 69),
-      #                                          landmark_gps_coord = (34.0000000, 24.0000000, 'NW'))
+    #gps_matrix = gps_grid_generator.compile_gps_matrix(cost_matrix = cost_matrix, 
+     #                                                    pixel_len = 1.2, 
+      #                                              landmark_coord = (69, 69),
+       #                                         landmark_gps_coord = (34.0000000, 24.0000000, 'NW'))
 
     # Uses waypoints list to tell the robot where to move (simulation)
     pure_pursuit.input_waypoints(waypoints)

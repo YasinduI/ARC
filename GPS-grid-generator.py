@@ -6,7 +6,7 @@
 
 import math
 
-pixel_len = 6.9 # non-zero and arbitrary for now
+pixel_len = 0.69 # non-zero and arbitrary for now
 landmark_gps = (0.0000000, 0.0000000, 'NW')
 gps_matrix = [[]]
 
