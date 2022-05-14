@@ -8,11 +8,8 @@
 from PIL import Image
 import csv
 
-map_ref_file = r""
-cost_output_file = r""
-cost_matrix = [[]]
-start = []
-end = []
+map_ref_file = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\test-image.png"
+cost_output_file = r"C:\\Users\\User\\Desktop\\ARC\\ARC\\nav-map-costs.csv"
 # set as indices of .csv file. (e.g. AB123 is list [AB, 123])
 
 
@@ -28,7 +25,7 @@ def set_map_param (map_ref_path, cost_output_path, start_node, end_node) :
 
 def get_map (csvPath) :
 
-    global map_ref_file, cost_output_file, cost_matrix
+    global map_ref_file, cost_output_file
     """gets a .csv path cost map "cost_matrix" from a given image"""
 
     # open .csv file to write cost matrix, and create writer object
@@ -45,7 +42,7 @@ def get_map (csvPath) :
     
     # create cost matrix
     # initialize with infinite costs
-    # 0 is walkable, 999 is not walkable
+    # 0 is walkable, 1 is not walkable
     cost_matrix = [[999 for i in range(width)] for j in range(height)]
 
     # export .csv map of paths costs
@@ -54,7 +51,9 @@ def get_map (csvPath) :
     img = img.convert('RGB')
 
     for y in range (height) :
-        for x in range (width) :
+
+        tempRow = [999 for i in range(width)]
+        for x in range (len(tempRow)) :
 
             # if pixel is white, assign cost of 999
             # if pixel is black, assign cost of 0
@@ -62,9 +61,13 @@ def get_map (csvPath) :
             colors = (int(colors[0]), int(colors[1]), int(colors[2]))
 
             if ((colors) != (255, 255, 255)) : # pixels referenced as column, row: x, y
-                cost_matrix[y][x] = 0
+                tempRow[x] = 0
+            
+        cost_matrix[y] = tempRow
 
         writer.writerow(cost_matrix[y]) 
+
+    print ('in get_map(), cost matrix at (186, 32) and (248, 57) is:', cost_matrix[186][46], cost_matrix[248][57])
 
     # close .csv map file
     costCSV.close()
@@ -86,23 +89,21 @@ class Node():
     def __eq__(self, other):
         return self.position == other.position
 
-
 def find_map_index(index_list) :
     """ finds map index in the cost matrix given .csv location in [AB, 123] form """
     
-    # shift row number -1 because list starts index at 0    
+    # shift row number -1 because list starts index at 0
     row = index_list[1] - 1
-    column = 0
 
-    # shift column number -1 because list starts index at 0
     letters = index_list[0]
-    lenLetters = len(letters)
-    for i in range(lenLetters) :
-        column = column + (ord(letters[i])-64) * (26**(lenLetters-i-1))
-
-    # return matrix indices in tuple (row, column)
+    # shift column number -1 because list starts index at 0
+    column = (26 * (len(letters) - 1)) - 1
+    for letter in letters :
+        column = column + (ord(letter) - 64) # subtract by 64 to get accurate ASCII value
+    
+    # return matrix indices in list [row, column]
     return (int(row), int(column))
-     
+        
 
 def astar(maze, start, end):
     """Returns a list of tuples as a path from the given start to the given end in the given maze"""
@@ -186,31 +187,32 @@ def astar(maze, start, end):
             # Add the child to the open list
             open_list.append(child)
 
-def get_cost_matrix():
-    global cost_matrix
-    return cost_matrix
-
 
 def get_waypoints():
 
     global map_ref_file, cost_output_file, start, end
+    
+    start = ['CD', 187]
+    end = ['PP', 249]
 
-    #maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 6, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 6, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
     maze = get_map(map_ref_file)
+    print(len(maze), len(maze[0]))
+    #print(maze)
 
     print('START:', find_map_index(start), 'END:', find_map_index(end), '\n')
-
-    path = astar(maze, (find_map_index(start)), find_map_index(end))
+    #path = astar(maze, (0,0), (9,4))
+    path = astar(maze, find_map_index(start), find_map_index(end))
     print(path)
 
     return(path)

@@ -9,23 +9,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 global L, wp, vx, theta, w_limit
-L = 10 # look ahead distance
+L = 15 # look ahead distance
 wp = 0
 vx = 5 # velocity
 theta = 0.5 # angle
-w_limit = 0.48 # angular velocity in rad/s
+w_limit = 0.48
 # waypoints = [[0, 8], [5, 8], [5, 0], [12, 0]]
 # waypoints = [[0, 8], [5, 8], [6, 10], [5, 0], [12, 0]]
 # waypoints = [[0, 8], [5, 8], [5, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
 # waypoints = [[0, 0], [3, 8], [7, 8], [8, 5], [3, 3], [5 ,0], [8, 2], [12, 0]]
 waypoints = [[]]
-position = [184, 33]
+position = []
 
-def input_waypoints (waypoints_list) :
-    global waypoints
+
+def set_pp_param (waypoints_list, current_pos) :
+    global waypoints, position
     waypoints = waypoints_list
+    position = current_pos
 
-#def plot_waypoints(waypoints):
 
 def position_vector(vx, w, theta):
     global w_limit
@@ -38,6 +39,7 @@ def position_vector(vx, w, theta):
     elif tdot <= -w_limit:
         tdot = -w_limit
     return Xdot, Ydot, tdot
+
 
 def pure_pursuit(position, waypoints):
     global L, wp, vx, theta
@@ -74,6 +76,7 @@ def pure_pursuit(position, waypoints):
     w = 2*yd*vx/(L**2)
 
     return vx, w, error
+
 
 def traverse_path() :
     global L, wp, vx, theta

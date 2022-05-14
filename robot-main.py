@@ -22,12 +22,13 @@ def main() :
 
     # Gets GPS coordinate matrix
     #gps_matrix = gps_grid_generator.compile_gps_matrix(cost_matrix = cost_matrix, 
-     #                                                    pixel_len = 1.2, 
-      #                                              landmark_coord = (69, 69),
-       #                                         landmark_gps_coord = (34.0000000, 24.0000000, 'NW'))
+    #                                                    pixel_len = 1.2, 
+    #                                               landmark_coord = (69, 69),
+    #                                           landmark_gps_coord = (34.0000000, 24.0000000, 'NW'))
 
     # Uses waypoints list to tell the robot where to move (simulation)
-    pure_pursuit.input_waypoints(waypoints)
+    pure_pursuit.set_pp_param(waypoints_list = waypoints, 
+                                 current_pos = [191,68])
     pure_pursuit.traverse_path()
 
 if __name__ == '__main__':
